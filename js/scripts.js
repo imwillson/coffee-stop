@@ -1,13 +1,25 @@
-function Stopwatch() {
+function Stopwatch(timerText) {
     var time = 0;
     var interval;
     var offset;
 
     // runs every 10 miliseconds
     function update() {
-    	time += delta();
+    	if (this.isOn) {
+    		time += delta();
+    	}
+
+    	// time += delta();
+
+    	
+
     	var formattedTime = timeFormatter(time);
-    	console.log(formattedTime);
+    	//console.log(formattedTime);
+    	//console.log(formattedTime);
+    	timerText.text(formattedTime);
+
+    	//console.log(timerText);
+
     };
 
     function delta() {
@@ -47,11 +59,18 @@ function Stopwatch() {
     this.isOn = false; //always on off
     this.start = function() {
         if (!this.isOn) {
-        	interval = setInterval(update, 10);
+
+
+        	//bind so that this is not referred to "window"
+        	interval = setInterval(update.bind(this), 10);
         	offset = Date.now();
         	this.isOn = true;
+        	
+
+        	console.log("start function test")
         }
     };
+
     this.stop = function() {
     	if (this.isOn) {
     		clearInterval(interval);
@@ -59,8 +78,10 @@ function Stopwatch() {
     		this.isOn = false;
     	}
     };
+
     this.reset = function() {
     	time = 0;
+    	update();
     };
     
 
